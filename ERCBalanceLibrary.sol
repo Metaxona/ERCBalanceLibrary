@@ -100,8 +100,8 @@ library ERCBalance {
     *   `spender` - address of the contract whose being allowed to spend a certain amount of the token in place of the `_owner`
     *   returns uint256 value
     */
-    function ERC20Allowance(address _tokenAddress, address spender, address _owner) public view returns(uint256) {
-        return IERC20(_tokenAddress).allowance(spender, _owner);
+    function ERC20Allowance(address _tokenAddress, address _owner, address spender) public view returns(uint256) {
+        return IERC20(_tokenAddress).allowance(_owner, spender);
     }
     
     /**
@@ -157,8 +157,8 @@ library ERCBalance {
     *   `amount` - amount of ERC20 to be compared to the one allowed by the `_owner`
     *   returns bool value
     */
-    function hasEnoughERC20Allowance(address _tokenAddress, address spender, address _owner, uint256 amount) public view returns(bool) {
-        return IERC20(_tokenAddress).allowance(spender, _owner) >= amount;
+    function hasEnoughERC20Allowance(address _tokenAddress, address _owner, address spender, uint256 amount) public view returns(bool) {
+        return ERC20Allowance(_tokenAddress, _owner, spender) >= amount;
     }
 
     /**
@@ -205,7 +205,7 @@ library ERCBalance {
     *   revert error is named TokenOwnerError
     */
     function ERC20RequirementsTrue(address _tokenAddress, address spender, address _owner, uint256 amount) public view returns(bool) {
-        return ownsERC20Amount(_tokenAddress, _owner, amount) && hasEnoughERC20Allowance(_tokenAddress, spender, _owner, amount);
+        return ownsERC20Amount(_tokenAddress, _owner, amount) && hasEnoughERC20Allowance(_tokenAddress, _owner, spender, amount);
     }
 
     /**
